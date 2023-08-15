@@ -3,6 +3,7 @@ import { type NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import { type ReactNode } from 'react';
+import { api } from '~/utils/api';
 
 const Button = ({ children }: { children: ReactNode }) => {
   return <button className="border px-4 py-2">{children}</button>;
@@ -33,6 +34,24 @@ const Header = () => {
   );
 };
 
+const GamesList = () => {
+  const { data } = api.games.getAll.useQuery();
+
+  return (
+    <div className="mt-5 flex w-full flex-row items-center justify-center">
+      {data?.map((game) => (
+        <div key={game.id} className="border-b py-5">
+          <p>Week {game.week}</p>
+          <p>{String(game.date)}</p>
+          <p>
+            {game.awayTeam} @ {game.homeTeam}
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+};
+
 const Home: NextPage = () => {
   const user = useUser();
 
@@ -53,7 +72,12 @@ const Home: NextPage = () => {
                 </Button>
               </div>
             )}
-            {!!user.isSignedIn && <Header />}
+            {!!user.isSignedIn && (
+              <div className="flex w-full flex-col">
+                <Header />
+                <GamesList />
+              </div>
+            )}
           </div>
         </main>
       </div>
