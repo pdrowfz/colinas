@@ -1,9 +1,14 @@
 import { SignInButton, SignOutButton, useUser } from '@clerk/nextjs';
+import dayjs from 'dayjs';
+import advancedFormat from 'dayjs/plugin/advancedFormat';
 import { type NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import { type ReactNode } from 'react';
 import { api } from '~/utils/api';
+import { type TeamAbbreviation, getTeamName } from '~/utils/teams';
+
+dayjs.extend(advancedFormat);
 
 const Button = ({ children }: { children: ReactNode }) => {
   return <button className="border px-4 py-2">{children}</button>;
@@ -20,12 +25,12 @@ const Header = () => {
       <div className="flex flex-col items-center">
         <Image
           src={user.profileImageUrl}
-          alt="Profile image"
-          width="200"
-          height="200"
+          alt="Profile picture"
+          width={56}
+          height={56}
           className="h-14 w-14 rounded-full"
         />
-        <p className="mt-3 text-lg">{user.fullName}</p>
+        <p className="mt-3 text-lg">{user.fullName}&apos;s picks</p>
       </div>
       <Button>
         <SignOutButton />
@@ -35,16 +40,24 @@ const Header = () => {
 };
 
 const GamesList = () => {
-  const { data } = api.games.getAll.useQuery();
+  const { data, isLoading } = api.games.getAll.useQuery();
+
+  if (isLoading) return <div>Loading...</div>;
+
+  if (!data) return <div>Something went wrong</div>;
 
   return (
-    <div className="mt-5 flex w-full flex-row items-center justify-center">
-      {data?.map((game) => (
-        <div key={game.id} className="border-b py-5">
+    <div className="w-full">
+      {[...data, ...data].map((game) => (
+        <div
+          key={game.id}
+          className="flex w-full flex-col items-center justify-center border-b border-slate-400 p-8"
+        >
           <p>Week {game.week}</p>
-          <p>{String(game.date)}</p>
+          <p>{dayjs(game.date).format('dddd, MMMM Do - h:mm A')}</p>
           <p>
-            {game.awayTeam} @ {game.homeTeam}
+            {getTeamName(game.awayTeam as TeamAbbreviation)} @{' '}
+            {getTeamName(game.homeTeam as TeamAbbreviation)}
           </p>
         </div>
       ))}
@@ -60,7 +73,13 @@ const Home: NextPage = () => {
       <Head>
         <title>Colinas</title>
         <meta name="description" content="Colinas Applications" />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/apple-touch-icon.png"
+        ></link>
         <link rel="icon" href="/favicon.ico" />
+        <link rel="manifest" href="/site.webmanifest"></link>
       </Head>
       <div className="flex h-screen justify-center">
         <main className="h-full w-full border-x border-slate-400 md:max-w-5xl">

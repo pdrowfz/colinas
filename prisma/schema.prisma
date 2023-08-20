@@ -22,6 +22,7 @@ model Game {
     homeTeam String @db.VarChar(3)
     awayScore Int?
     homeScore Int?
+    final Boolean @default(false)
 
     @@index([week])
 }
