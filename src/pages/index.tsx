@@ -5,6 +5,7 @@ import { type NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import { type ReactNode } from 'react';
+import { LoadingPage } from '~/components/Loading';
 import { api } from '~/utils/api';
 import { type TeamAbbreviation, getTeamName } from '~/utils/teams';
 
@@ -15,9 +16,9 @@ const Button = ({ children }: { children: ReactNode }) => {
 };
 
 const Header = () => {
-  const { user } = useUser();
+  const { user, isLoaded } = useUser();
 
-  if (!user) return null;
+  if (!user || !isLoaded) return null;
 
   return (
     <header className="flex w-full flex-row items-center justify-between border-b border-slate-400 p-4">
@@ -42,7 +43,7 @@ const Header = () => {
 const GamesList = () => {
   const { data, isLoading } = api.games.getAll.useQuery();
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <LoadingPage />;
 
   if (!data) return <div>Something went wrong</div>;
 
