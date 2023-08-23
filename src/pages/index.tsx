@@ -41,7 +41,13 @@ const Header = () => {
 };
 
 const GamesList = () => {
+  const ctx = api.useContext();
   const { data, isLoading } = api.games.getAll.useQuery();
+  const { mutate, isLoading: isPicking } = api.picks.create.useMutation({
+    onSuccess: () => {
+      void ctx.games.getAll.invalidate();
+    },
+  });
 
   if (isLoading) return <LoadingPage />;
 
@@ -49,7 +55,7 @@ const GamesList = () => {
 
   return (
     <div className="w-full">
-      {[...data, ...data].map((game) => (
+      {data.map((game) => (
         <div
           key={game.id}
           className="flex w-full flex-col items-center justify-center border-b border-slate-400 p-8"
@@ -60,6 +66,14 @@ const GamesList = () => {
             {getTeamName(game.awayTeam as TeamAbbreviation)} @{' '}
             {getTeamName(game.homeTeam as TeamAbbreviation)}
           </p>
+          <button
+            onClick={() => mutate({ gameId: game.id, pick: 'away' })}
+            disabled={isPicking}
+          >{`Pick ${getTeamName(game.awayTeam as TeamAbbreviation)}`}</button>
+          <button
+            onClick={() => mutate({ gameId: game.id, pick: 'home' })}
+            disabled={isPicking}
+          >{`Pick ${getTeamName(game.homeTeam as TeamAbbreviation)}`}</button>
         </div>
       ))}
     </div>

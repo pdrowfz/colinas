@@ -9,5 +9,5 @@
     "node_modules": true,
     ".next/": true
   },
-  "cSpell.words": ["Colinas"]
+  "cSpell.words": ["Colinas", "TRPC"]
 }

@@ -26,3 +26,13 @@ model Game {
 
     @@index([week])
 }
+
+model Pick {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    gameId String
+    authorId String
+    pick String @db.VarChar(4)
+}
