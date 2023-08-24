@@ -5,6 +5,7 @@ import { type NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import { type ReactNode } from 'react';
+import { toast } from 'react-hot-toast';
 import { LoadingPage } from '~/components/Loading';
 import { api } from '~/utils/api';
 import { type TeamAbbreviation, getTeamName } from '~/utils/teams';
@@ -45,7 +46,16 @@ const GamesList = () => {
   const { data, isLoading } = api.games.getAll.useQuery();
   const { mutate, isLoading: isPicking } = api.picks.create.useMutation({
     onSuccess: () => {
+      toast.success('Successfully picked!');
       void ctx.games.getAll.invalidate();
+    },
+    onError: (e) => {
+      const errorMessage = e.message;
+      if (errorMessage) {
+        toast.error(errorMessage);
+      } else {
+        toast.error('Failed to pick. Please try again later.');
+      }
     },
   });
 
