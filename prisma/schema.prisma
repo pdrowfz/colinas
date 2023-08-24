@@ -23,6 +23,7 @@ model Game {
     awayScore Int?
     homeScore Int?
     final Boolean @default(false)
+    picks Pick[]
 
     @@index([week])
 }
@@ -32,7 +33,10 @@ model Pick {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
+    game Game @relation(fields: [gameId], references: [id])
     gameId String
     authorId String
     pick String @db.VarChar(4)
+
+    @@index([gameId])
 }

@@ -101,12 +101,24 @@ const GamesList = () => {
               {getTeamName(game.homeTeam as TeamAbbreviation)}
             </p>
             <button
-              onClick={() => mutate({ gameId: game.id, pick: 'away' })}
-              disabled={isPicking}
+              onClick={() =>
+                mutate({
+                  pickId: game.picks[0]?.id,
+                  gameId: game.id,
+                  pick: 'away',
+                })
+              }
+              disabled={isPicking || game.picks[0]?.pick === 'away'}
             >{`Pick ${getTeamName(game.awayTeam as TeamAbbreviation)}`}</button>
             <button
-              onClick={() => mutate({ gameId: game.id, pick: 'home' })}
-              disabled={isPicking}
+              onClick={() =>
+                mutate({
+                  pickId: game.picks[0]?.id,
+                  gameId: game.id,
+                  pick: 'home',
+                })
+              }
+              disabled={isPicking || game.picks[0]?.pick === 'home'}
             >{`Pick ${getTeamName(game.homeTeam as TeamAbbreviation)}`}</button>
           </div>
         ))}
