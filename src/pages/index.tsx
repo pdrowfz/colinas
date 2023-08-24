@@ -4,7 +4,7 @@ import advancedFormat from 'dayjs/plugin/advancedFormat';
 import { type NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
-import { type ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import { toast } from 'react-hot-toast';
 import { LoadingPage } from '~/components/Loading';
 import { api } from '~/utils/api';
@@ -41,13 +41,34 @@ const Header = () => {
   );
 };
 
+type WeekSelectorProps = {
+  week: number;
+  setWeek: (arg0: number) => void;
+};
+
+const WeekSelector = ({ week, setWeek }: WeekSelectorProps) => {
+  return (
+    <div className="align-center flex w-96 flex-row justify-between">
+      {week > 1 ? (
+        <button onClick={() => setWeek(week - 1)}>Previous week</button>
+      ) : null}
+      <p>{week}</p>
+      {week < 18 ? (
+        <button onClick={() => setWeek(week + 1)}>Next week</button>
+      ) : null}
+    </div>
+  );
+};
+
 const GamesList = () => {
+  const [week, setWeek] = useState(1);
+
   const ctx = api.useContext();
-  const { data, isLoading } = api.games.getAll.useQuery();
+  const { data, isLoading } = api.games.getGamesByWeek.useQuery({ week });
   const { mutate, isLoading: isPicking } = api.picks.create.useMutation({
     onSuccess: () => {
       toast.success('Successfully picked!');
-      void ctx.games.getAll.invalidate();
+      void ctx.games.getGamesByWeek.invalidate();
     },
     onError: (e) => {
       const errorMessage = e.message;
@@ -65,27 +86,31 @@ const GamesList = () => {
 
   return (
     <div className="w-full">
-      {data.map((game) => (
-        <div
-          key={game.id}
-          className="flex w-full flex-col items-center justify-center border-b border-slate-400 p-8"
-        >
-          <p>Week {game.week}</p>
-          <p>{dayjs(game.date).format('dddd, MMMM Do - h:mm A')}</p>
-          <p>
-            {getTeamName(game.awayTeam as TeamAbbreviation)} @{' '}
-            {getTeamName(game.homeTeam as TeamAbbreviation)}
-          </p>
-          <button
-            onClick={() => mutate({ gameId: game.id, pick: 'away' })}
-            disabled={isPicking}
-          >{`Pick ${getTeamName(game.awayTeam as TeamAbbreviation)}`}</button>
-          <button
-            onClick={() => mutate({ gameId: game.id, pick: 'home' })}
-            disabled={isPicking}
-          >{`Pick ${getTeamName(game.homeTeam as TeamAbbreviation)}`}</button>
-        </div>
-      ))}
+      <div className="flex w-full flex-col items-center">
+        <WeekSelector week={week} setWeek={setWeek} />
+        <div className="w-full border-b border-slate-400" />
+        {data.map((game) => (
+          <div
+            key={game.id}
+            className="flex w-full flex-col items-center justify-center border-b border-slate-400 p-8"
+          >
+            <p>Week {game.week}</p>
+            <p>{dayjs(game.date).format('dddd, MMMM Do - h:mm A')}</p>
+            <p>
+              {getTeamName(game.awayTeam as TeamAbbreviation)} @{' '}
+              {getTeamName(game.homeTeam as TeamAbbreviation)}
+            </p>
+            <button
+              onClick={() => mutate({ gameId: game.id, pick: 'away' })}
+              disabled={isPicking}
+            >{`Pick ${getTeamName(game.awayTeam as TeamAbbreviation)}`}</button>
+            <button
+              onClick={() => mutate({ gameId: game.id, pick: 'home' })}
+              disabled={isPicking}
+            >{`Pick ${getTeamName(game.homeTeam as TeamAbbreviation)}`}</button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
