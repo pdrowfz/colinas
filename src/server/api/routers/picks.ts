@@ -15,7 +15,7 @@ export const picksRouter = createTRPCRouter({
 
       const pick = await ctx.prisma.pick.upsert({
         where: {
-          id: input.pickId,
+          id: input.pickId ?? '',
         },
         update: {
           pick: input.pick,
