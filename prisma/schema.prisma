@@ -18,11 +18,11 @@ model Game {
 
     date DateTime
     week Int
-    awayTeam String @db.VarChar(3)
-    homeTeam String @db.VarChar(3)
+    awayTeam Team
+    homeTeam Team
     awayScore Int?
     homeScore Int?
-    final Boolean @default(false)
+    status GameStatus @default(not_started)
     picks Pick[]
 
     @@index([week])
@@ -39,4 +39,45 @@ model Pick {
     pick String @db.VarChar(4)
 
     @@index([gameId])
+}
+
+enum GameStatus {
+  not_started
+  live
+  final
+}
+
+enum Team {
+  ARI
+  ATL
+  BAL
+  BUF
+  CAR
+  CHI
+  CIN
+  CLE
+  DAL
+  DEN
+  DET
+  GB
+  HOU
+  IND
+  JAX
+  KC
+  LAC
+  LAR
+  LV
+  MIA
+  MIN
+  NE
+  NO
+  NYG
+  NYJ
+  PHI
+  PIT
+  SEA
+  SF
+  TB
+  TEN
+  WAS
 }

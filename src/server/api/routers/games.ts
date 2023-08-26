@@ -9,7 +9,7 @@ export const gamesRouter = createTRPCRouter({
 
       const games = await ctx.prisma.game.findMany({
         where: { week: input.week },
-        orderBy: [{ date: 'desc' }],
+        orderBy: [{ date: 'asc' }],
         include: {
           picks: {
             where: {
