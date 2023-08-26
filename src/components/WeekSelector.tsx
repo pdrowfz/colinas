@@ -1,3 +1,6 @@
+import { weeks } from '~/utils/weeks';
+import { Button } from './ui/button';
+
 type WeekSelectorProps = {
   week: number;
   setWeek: (arg0: number) => void;
@@ -5,14 +8,19 @@ type WeekSelectorProps = {
 
 const WeekSelector = ({ week, setWeek }: WeekSelectorProps) => {
   return (
-    <div className="align-center flex w-96 flex-row justify-between">
-      {week > 1 ? (
-        <button onClick={() => setWeek(week - 1)}>Previous week</button>
-      ) : null}
-      <p>{week}</p>
-      {week < 18 ? (
-        <button onClick={() => setWeek(week + 1)}>Next week</button>
-      ) : null}
+    <div className="mb-6 flex flex-col items-center">
+      <h3 className="text-2xl font-semibold text-slate-900">Week</h3>
+      <div className="mt-2 flex flex-row items-center gap-2">
+        {weeks.map((weekObj) => (
+          <Button
+            key={weekObj.week}
+            variant={weekObj.week == week ? 'default' : 'secondary'}
+            onClick={() => setWeek(weekObj.week)}
+          >
+            {weekObj.week}
+          </Button>
+        ))}
+      </div>
     </div>
   );
 };
