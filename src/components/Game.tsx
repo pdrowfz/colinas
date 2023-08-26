@@ -36,10 +36,28 @@ const Game = ({
   });
 
   const userPick = picks[0]?.pick;
+  const finalResultsAvailable =
+    status === 'final' && homeScore !== null && awayScore !== null;
+  const winningTeam =
+    finalResultsAvailable &&
+    (homeScore > awayScore ? 'home' : awayScore > homeScore ? 'away' : 'tie');
+  const userPickIsCorrect = finalResultsAvailable && userPick === winningTeam;
 
   return (
-    <Card className="h-32 w-full">
-      <div className="flex h-full w-full flex-row">
+    <Card
+      className={`h-32 w-full ${
+        userPickIsCorrect ? 'border-2 border-green-700' : ''
+      } ${
+        finalResultsAvailable && !userPickIsCorrect
+          ? 'border-2 border-red-700'
+          : ''
+      }`}
+    >
+      <div
+        className={`flex h-full w-full flex-row ${
+          status === 'final' ? 'opacity-50' : ''
+        }`}
+      >
         <div className="flex h-full w-1/3 items-center justify-center">
           <TeamButton
             team={`${userPick === 'away' ? 'picked' : ''}${awayTeam}`}
@@ -50,7 +68,9 @@ const Game = ({
                 pick: 'away',
               })
             }
-            disabled={isPicking || userPick === 'away'}
+            disabled={
+              isPicking || status !== 'not_started' || userPick === 'away'
+            }
           >
             <Image
               src={teams[awayTeam].logoPath}
@@ -82,7 +102,9 @@ const Game = ({
                 pick: 'home',
               })
             }
-            disabled={isPicking || userPick === 'home'}
+            disabled={
+              isPicking || status !== 'not_started' || userPick === 'home'
+            }
           >
             <Image
               src={teams[homeTeam].logoPath}
