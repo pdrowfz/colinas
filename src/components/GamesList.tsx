@@ -18,15 +18,40 @@ const GamesList = ({ week }: GamesListProps) => {
 
   if (!data) return <div>Something went wrong</div>;
 
+  const gamesWithFormattedDate = data.map((game) => ({
+    ...game,
+    formattedDate: dayjs(game.date).format('dddd, MMMM Do'),
+  }));
+
+  const gamesGroupedByDate = gamesWithFormattedDate.reduce(
+    (group: { [key: string]: Game[] }, item) => {
+      if (!group[item.formattedDate]) {
+        group[item.formattedDate] = [];
+      }
+      group[item.formattedDate]?.push(item);
+      return group;
+    },
+    {},
+  );
+
+  const gameDates = Object.keys(gamesGroupedByDate);
+
   return (
     <div className="w-3/4">
-      {data.map((game) => (
-        <Fragment key={game.id}>
-          <h4 className="my-3 text-xl font-semibold text-slate-900">
-            {dayjs(game.date).format('dddd, MMMM Do')}
+      {gameDates.map((date) => (
+        <>
+          <h4
+            key={date}
+            className="mb-4 mt-8 text-xl font-semibold text-slate-900"
+          >
+            {date}
           </h4>
-          <Game {...game} />
-        </Fragment>
+          <div className="flex flex-col gap-4">
+            {gamesGroupedByDate[date]?.map((game) => (
+              <Game key={game.id} {...game} />
+            ))}
+          </div>
+        </>
       ))}
     </div>
   );

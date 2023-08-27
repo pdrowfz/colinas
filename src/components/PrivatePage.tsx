@@ -18,7 +18,7 @@ const PrivatePage = ({ children }: PrivatePageProps) => {
   return (
     <div className="flex h-full w-full flex-col items-center justify-center">
       <Header />
-      <main className="my-6 flex h-full w-full flex-col items-center md:max-w-7xl">
+      <main className="my-16 flex h-full w-full flex-col items-center md:max-w-7xl">
         {children}
       </main>
     </div>

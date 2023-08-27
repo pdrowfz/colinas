@@ -46,10 +46,10 @@ const Game = ({
   return (
     <Card
       className={`h-32 w-full ${
-        userPickIsCorrect ? 'border-2 border-green-700' : ''
+        userPickIsCorrect ? 'border-4 border-green-400' : ''
       } ${
         finalResultsAvailable && !userPickIsCorrect
-          ? 'border-2 border-red-700'
+          ? 'border-4 border-red-400'
           : ''
       }`}
     >
@@ -81,14 +81,18 @@ const Game = ({
             />
           </TeamButton>
         </div>
-        <div className="flex h-full w-1/3 flex-col items-center justify-between p-2">
+        <div className="flex h-full w-1/3 flex-col items-center justify-between p-2 text-slate-900">
           {status === 'not_started' ? dayjs(date).format('h:mm A') : null}
           {status === 'live' ? 'LIVE' : null}
           {status === 'final' ? 'FINAL' : null}
-          <div className="flex w-full flex-row items-center justify-around text-slate-900">
-            {status !== 'not_started' ? <div>{awayScore}</div> : null}
+          <div className="flex w-full flex-row items-center justify-around">
+            {status !== 'not_started' ? (
+              <div className="text-xl">{awayScore}</div>
+            ) : null}
             <div className="text-3xl font-semibold">@</div>
-            {status !== 'not_started' ? <div>{homeScore}</div> : null}
+            {status !== 'not_started' ? (
+              <div className="text-xl">{homeScore}</div>
+            ) : null}
           </div>
           <div>&nbsp;</div>
         </div>

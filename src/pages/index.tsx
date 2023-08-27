@@ -22,7 +22,7 @@ const Login: NextPage = () => {
           <ColinasLogo className="h-20 w-20 fill-slate-900" />
           Colinas Pick&apos;em
         </div>
-        <Separator className="mb-4 w-3/4 bg-slate-700" />
+        <Separator className="mb-4 bg-slate-900 sm:w-3/4 lg:w-1/2" />
         {!user.isLoaded ? <LoadingSpinner size={32} /> : null}
         {user.isLoaded && !user.isSignedIn && (
           <Button size="lg" asChild={true}>

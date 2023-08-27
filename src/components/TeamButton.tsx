@@ -3,7 +3,7 @@ import { type VariantProps, cva } from 'class-variance-authority';
 import { cn } from '~/lib/utils';
 
 const teamButtonVariants = cva(
-  'flex h-full w-full items-center justify-center rounded-md bg-cover bg-center bg-no-repeat ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2 disabled:pointer-events-none',
+  'flex h-full w-full items-center justify-center rounded-sm bg-cover bg-center bg-no-repeat ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2 disabled:pointer-events-none',
   {
     variants: {
       team: {
