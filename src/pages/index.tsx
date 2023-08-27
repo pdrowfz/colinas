@@ -25,7 +25,7 @@ const Login: NextPage = () => {
         <Separator className="mb-4 w-3/4 bg-slate-700" />
         {!user.isLoaded ? <LoadingSpinner size={32} /> : null}
         {user.isLoaded && !user.isSignedIn && (
-          <Button size="lg">
+          <Button size="lg" asChild={true}>
             <SignInButton />
           </Button>
         )}

@@ -9,7 +9,7 @@ type WeekSelectorProps = {
 const WeekSelector = ({ week, setWeek }: WeekSelectorProps) => {
   return (
     <div className="mb-6 flex flex-col items-center">
-      <h3 className="text-2xl font-semibold text-slate-900">Week</h3>
+      <h3 className="text-2xl font-semibold text-slate-900">Week {week}</h3>
       <div className="mt-2 flex flex-row items-center gap-2">
         {weeks.map((weekObj) => (
           <Button
