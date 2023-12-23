@@ -1,28 +1,32 @@
-# Create T3 App
+# Colinas Pick'em
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+Colinas Pick'em is an app to allow picking the winners of the NFL games of the week.
 
-## What's next? How do I make an app with this?
+## Tech used
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+Colinas Pick'em is built on top of the T3 Stack. It currently uses:
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
-
+- [TypeScript](https://www.typescriptlang.org/)
 - [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
 - [Tailwind CSS](https://tailwindcss.com)
 - [tRPC](https://trpc.io)
+- [Prisma](https://prisma.io)
+- [Zod](https://github.com/colinhacks/zod)
+- Deployed on [Vercel](https://vercel.com/)
+- Authentication through [Clerk](https://clerk.com/)
+- MySQL database on [PlanetScale](https://planetscale.com/)
+- Logs on [Axiom](https://axiom.co/)
 
-## Learn More
+## Screenshots
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+## How to run
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+Fill `DATABASE_URL` with your MySQL database URL, `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY` with your Clerk keys, and then:
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+- `npx prisma db push`
+- `npm install`
+- `npm run dev`
 
-## How do I deploy this?
+## How to deploy
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+Merge a PR to the `main` branch and it will run the pipeline and deploy automatically.
